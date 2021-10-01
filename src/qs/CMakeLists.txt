@@ -23,7 +23,7 @@ generate_export_header(qs
 # Setup as library
 
 target_include_directories(qs PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..
-                                        ${CMAKE_CURRENT_SOURCE_DIR}/..)
+                                     ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 set_target_properties(qs PROPERTIES
   # Language settings
