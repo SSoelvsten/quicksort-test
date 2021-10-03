@@ -2,22 +2,32 @@
 
 This repository provides a small and simple implementation of the
 [Quicksort](https://en.wikipedia.org/wiki/Quicksort) algorithm, which is to be
-used as a C++ programming challenge for potential student job candidates.
-
-The programming exercises are described in the _issues_ section of this
-repository. Your solution should focus on _code quality_, _software
-architecture_, _testing_, and _not decreasing performance of the current
-solution_.
+used as a C++ programming challenge for potential student job candidates. The
+programming tasks are described in the
+[issues](https://github.com/SSoelvsten/quicksort-test/issues) section of this
+repository. See the [criteria](#criteria) below for what to focus on when
+solving the exercises.
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
+- [Criteria](#criteria)
 - [Dependencies](#dependencies)
 - [Usage](#usage)
 - [License](#license)
 
 <!-- markdown-toc end -->
 
+## Criteria
+
+Your solution should focus on
+
+1. Clean code and software architecture
+2. Testing
+3. Not decreasing performance of the current solution.
+
+A good but only partial solution to the given tasks is better than a solution
+that covers everything poorly.
 
 ## Dependencies
 
