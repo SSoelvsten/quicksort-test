@@ -1,4 +1,8 @@
 # Quicksort Test
+[![MIT License](https://img.shields.io/badge/license-MIT%20License-blue.svg)](LICENSE.md)
+[![linux](https://github.com/SSoelvsten/quicksort-test/actions/workflows/linux.yml/badge.svg)](https://github.com/SSoelvsten/quicksort-test/actions/workflows/linux.yml)
+[![macos](https://github.com/SSoelvsten/quicksort-test/actions/workflows/macos.yml/badge.svg)](https://github.com/SSoelvsten/quicksort-test/actions/workflows/macos.yml)
+[![windows](https://github.com/SSoelvsten/quicksort-test/actions/workflows/windows.yml/badge.svg)](https://github.com/SSoelvsten/quicksort-test/actions/workflows/windows.yml)
 
 This repository provides a small and simple implementation of the
 [Quicksort](https://en.wikipedia.org/wiki/Quicksort) algorithm, which is to be
