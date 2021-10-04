@@ -10,6 +10,7 @@ set(HEADERS
 )
 
 set(SOURCES
+  qs.cpp
 )
 
 add_library(qs STATIC ${HEADERS} ${SOURCES})

@@ -15,23 +15,29 @@ void print_vector(const std::vector<T> &v)
 }
 
 int main(int argc, char* argv[]) {
-  // ===== Your code starts here =====
+  qs::qs_init();
 
-  std::vector<int> v = {0, 1, 2, 3, 4, 5};
+  {
+    // ===== Your code starts here =====
 
-  print_vector(v);
+    std::vector<int> v = {0, 1, 2, 3, 4, 5};
 
-  const qs::stats_t stats = qs::sort(v, std::less<>());
+    print_vector(v);
 
-  print_vector(v);
+    const qs::stats_t stats = qs::sort(v, std::less<>());
 
-  // print statistics
-  std::cout << "Statistics:" << std::endl
-            << "  swaps:        " << stats.swaps << std::endl
-            << "  comparisons:  " << stats.comparisons << std::endl
-            << "  max depth:    " << stats.max_depth << std::endl;
+    print_vector(v);
 
-  // =====  Your code ends here  =====
+    // print statistics
+    std::cout << "Statistics:" << std::endl
+              << "  swaps:        " << stats.swaps << std::endl
+              << "  comparisons:  " << stats.comparisons << std::endl
+              << "  max depth:    " << stats.max_depth << std::endl;
+
+    // =====  Your code ends here  =====
+  }
+
+  qs::qs_deinit();
 
   return 0;
 }
