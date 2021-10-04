@@ -17,5 +17,11 @@ int main(int argc, char* argv[]) {
   std::cerr << "Warning: Internal assertions are not enabled!\n\n";
 #endif
 
-  return bandit::run(argc, argv);
+  qs::qs_init();
+
+  const auto bandit_ret = bandit::run(argc, argv);
+
+  qs::qs_deinit();
+
+  return bandit_ret;
 }
