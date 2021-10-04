@@ -1,0 +1,46 @@
+name: windows
+
+on: [ push ]
+
+jobs:
+  test:
+    name: 'Unit test (Windows)'
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        build_type: [Debug] #, Release, ExtraDebug]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: CMake build
+      working-directory: ${{runner.workspace}}
+      run: |
+        cmake -E make_directory ${{github.workspace}}/build
+        cd ${{github.workspace}}/build
+        SET CXXFLAGS="%CXXFLAGS% -D_HAS_AUTO_PTR_ETC=1"
+        cmake -G "Visual Studio 16 2019" -A x64 -D CMAKE_BUILD_TYPE="${{matrix.build_type}}" -D CMAKE_CXX_STANDARD=17 ..
+
+        msbuild ALL_BUILD.vcxproj
+
+    - name: Run unit tests
+      working-directory: ${{runner.workspace}}
+      run: |
+        dir
+
+
+        cd ${{github.workspace}}/build
+        dir
+
+        cd test
+        dir
+
+        ./test_unit.o --reporter=info --colorizer=light

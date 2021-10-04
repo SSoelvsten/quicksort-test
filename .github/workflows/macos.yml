@@ -1,0 +1,71 @@
+name: macos
+
+on: [ push ]
+
+jobs:
+  test:
+    name: 'Unit test (Mac OS, ${{matrix.cc.cc}}@${{matrix.cc.v || matrix.cc.xcode}}, ${{matrix.build_type}})'
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest]
+        build_type: [Debug] #, Release, ExtraDebug]
+        cc:
+          # GNU Compiler
+          - { cc: gcc,   v: 7,  cxx: g++, xcode: latest }
+          - { cc: gcc,   v: 10, cxx: g++, xcode: latest }
+
+          # Clang Compiler
+          - { cc: clang, cxx: clang++, xcode: 10.0 }
+          - { cc: clang, cxx: clang++, xcode: 11.0 }
+          - { cc: clang, cxx: clang++, xcode: 12.0 } # newest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    # Install dependencies
+    - name: Install xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: ${{matrix.cc.xcode}}
+
+    - name: Install dependencies
+      run: |
+        brew update
+
+        if ["${{matrix.cc.cc}}" == "gcc"];
+        then
+          echo "================================"
+          echo "Compiler"
+          brew install ${{matrix.cc.cc}}@${{matrix.cc.v}}
+        fi
+
+
+    # CMake build and run
+    - name: CMake build
+      working-directory: ${{runner.workspace}}
+      run: |
+        if [ "${{ matrix.cc.cc }}" == "gcc" ] ;
+        then
+          export CC=/usr/bin/${{matrix.cc.cc}}
+          export CXX=/usr/bin/${{matrix.cc.cxx}}
+        else
+          export CC=${{matrix.cc.cc}}
+          export CXX=${{matrix.cc.cxx}}
+        fi
+
+        cmake -E make_directory ${{github.workspace}}/build
+        cd ${{github.workspace}}/build
+        cmake -D CMAKE_BUILD_TYPE="${{matrix.build_type}}" ..
+
+        cmake --build . --target test_unit
+
+    - name: Run unit tests
+      working-directory: ${{runner.workspace}}
+      run: |
+        cd ${{github.workspace}}/build
+        ./test/test_unit --reporter=info --colorizer=light
