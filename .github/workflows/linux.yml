@@ -1,0 +1,62 @@
+name: linux
+
+on: [ push ]
+
+jobs:
+  test:
+    name: 'Unit test (Linux, ${{matrix.cc.cc}}-${{matrix.cc.v}}, ${{matrix.build_type}})'
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        build_type: [Debug] #, Release, ExtraDebug]
+        cc:
+          # GNU Compiler
+          - { cc: gcc,   v: 7,  cxx: g++ } # oldest possible
+          - { cc: gcc,   v: 9,  cxx: g++ } # default
+          - { cc: gcc,   v: 10, cxx: g++ } # newest
+
+          # Clang Compiler
+          - { cc: clang, v: 7,  cxx: clang++ } # oldest possible
+          - { cc: clang, v: 11, cxx: clang++ } # newest possible
+
+    env:
+      cc: ${{matrix.cc.cc}}-${{matrix.cc.v}}
+      cxx: ${{matrix.cc.cxx}}-${{matrix.cc.v}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Install dependencies
+      run: |
+        sudo apt install build-essential
+        sudo apt install ${{matrix.cc.cc}}-${{matrix.cc.v}}
+
+    - name: CMake build
+      working-directory: ${{runner.workspace}}
+      run: |
+        export CC=${{env.cc}}
+        if [ "${{ matrix.cc.cc }}" != "gcc" ] ;
+        then
+          export CXX=${{env.cxx}}
+        fi
+
+        echo "================================"
+        echo "build qs"
+        cmake -E make_directory ${{github.workspace}}/build
+        cd ${{github.workspace}}/build
+        cmake -D CMAKE_BUILD_TYPE="${{matrix.build_type}}" -D CMAKE_C_FLAGS="$MACRO_FLAGS" -D CMAKE_CXX_FLAGS="$MACRO_FLAGS" ..
+
+        echo "================================"
+        echo "build test"
+        cmake --build . --target test_unit
+
+    - name: Run unit tests
+      working-directory: ${{runner.workspace}}
+      run: |
+        cd ${{github.workspace}}/build
+        ./test/test_unit --reporter=info --colorizer=light
