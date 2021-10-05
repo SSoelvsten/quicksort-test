@@ -4,7 +4,7 @@
 #include <functional>
 
 // quicksort import
-#include <qs/sort.h>
+#include <qs/qs.h>
 
 template<typename T>
 void print_vector(const std::vector<T> &v)
