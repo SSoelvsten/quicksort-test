@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 
     print_vector(v);
 
-    const qs::stats_t stats = qs::sort(v, std::less<>());
+    const qs::stats_t stats = qs::sort(v, std::less<int>());
 
     print_vector(v);
 
