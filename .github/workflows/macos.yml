@@ -18,7 +18,6 @@ jobs:
           - { cc: gcc,   v: 10, cxx: g++, xcode: latest }
 
           # Clang Compiler
-          - { cc: clang, cxx: clang++, xcode: 10.0 }
           - { cc: clang, cxx: clang++, xcode: 11.0 }
           - { cc: clang, cxx: clang++, xcode: 12.0 } # newest
 
